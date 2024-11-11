@@ -1,9 +1,11 @@
 ;;; micropython-mode.el --- micropython mode derived from python mode -*- lexical-binding: t; -*-
 
 ;; copyright 2021 picospuch
-;; version 1.0
+;;           2024 krzysckh
 
 ;;; Code:
+
+(defvar micropython-device "/dev/ttyACM0" "MP-hosting device used with cu")
 
 (defun micropython-shell-send-string (string &optional process msg)
   "Send STRING to inferior Python PROCESS.
@@ -52,7 +54,7 @@ t when called interactively."
                                        (interactive)
                                        (comint-send-string process "\C-c\C-b"))))))
 
-(define-derived-mode micropython-mode python-mode "MicroPython Mode"
+(define-derived-mode micropython-mode python-mode "µPython"
   (make-local-variable 'python-shell-interpreter)
   (make-local-variable 'python-shell-interpreter-args)
   (make-local-variable 'python-shell-interpreter-interactive-arg)
@@ -61,7 +63,7 @@ t when called interactively."
   ;;(setq python-shell-interpreter "/Users/spuch/process/uucp/work2/uucp-1.07/cu")
   ;;(setq python-shell-interpreter "~/ws/p-micropython/ports/unix/micropython")
   (setq python-shell-interpreter "cu")
-  (setq python-shell-interpreter-args "-l /dev/cu.usbmodem141101 -s 115200")
+  (setq python-shell-interpreter-args (format "-l %s -s 115200" micropython-device))
   (setq python-shell-interpreter-interactive-arg nil)
   (setq python-shell-completion-native-enable nil)
 
